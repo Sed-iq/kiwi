@@ -28,3 +28,11 @@ module.exports.login = async (req, res) => {
     }
   }
 };
+module.exports.verify = (req, res, next) => {
+  const token = req.headers["x-access-token"];
+  const id = jwt.verify(token);
+  if (id) {
+    req.usr = id;
+    next();
+  } else errorHandle("You must be logged in to perform this action", 401, res);
+};
